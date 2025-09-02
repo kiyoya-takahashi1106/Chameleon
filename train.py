@@ -115,12 +115,14 @@ def train(args):
                 images = images.to(device)
                 labels = labels.to(device)
 
-                img_logits, text_logits = model(images, texts)
-                combined_logits = (img_logits + text_logits) / 2
+                # 確率で融合（logits足し算はやめる）
+                img_p  = F.softmax(img_logits, dim=1)
+                text_p = F.softmax(text_logits, dim=1)
+                combined_p = 0.5 * img_p + 0.5 * text_p
 
-                predictions = torch.max(combined_logits, 1)[1]
+                predictions = combined_p.argmax(dim=1)
                 correct += (predictions == labels).sum().item()
-                total += labels.size(0)
+                total   += labels.size(0)
             print("correct, total:", correct, total)
 
         acc = correct / total
