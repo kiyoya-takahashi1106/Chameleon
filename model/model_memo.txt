@@ -1,0 +1,15 @@
+1. VITをimageNetで事前学習してるなら3channel前提より、テキスト => 画像形式にする時に3channelにしてる.
+    1.1. 3channelに複製
+    1.2. 近傍の連続値をRGBに振り分けていく (arixivに書いてる方式)
+
+2. arixivに融合型が2つ書いている
+    2.1. Joint型 (Springerに書いてる方こっち)
+    2.2. fused型
+
+3. VITをimageNetで事前学習してるなら、ImageNetのavg/varで正規化が必要.
+
+
+
+// 実装
+1.1. を採用
+2.1. を採用

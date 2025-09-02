@@ -1,0 +1,6 @@
+/data/
+/log/
+/result/
+/saved_models/
+.env
+__pycache__/
