@@ -41,10 +41,10 @@ def train(args):
     test_dataset = UPMCFood101Dataset(root=f"data/{args.dataset_name}", split="test", img_size=args.img_size)
     test_data_loader = DataLoader(dataset=test_dataset, batch_size=args.batch_size, shuffle=False, drop_last=False)
 
-    device_ids = [i for i in range(torch.cuda.device_count())]
-    print(device_ids)
-    if len(device_ids) > 1:
-        model = nn.DataParallel(model, device_ids=device_ids)
+    # device_ids = [i for i in range(torch.cuda.device_count())]
+    # print(device_ids)
+    # if len(device_ids) > 1:
+    #     model = nn.DataParallel(model, device_ids=device_ids)
     
     # モデル全体をGPUに移動
     model = model.to(device)
@@ -114,6 +114,8 @@ def train(args):
                 images, texts, labels = batch
                 images = images.to(device)
                 labels = labels.to(device)
+
+                img_logits, text_logits = model(images, texts)
 
                 # 確率で融合（logits足し算はやめる）
                 img_p  = F.softmax(img_logits, dim=1)
